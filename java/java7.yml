@@ -1,8 +1,9 @@
 - name: Download java jdk 7 oracle
   hosts: servers
+  remote_user: lobo
   vars:
     java_download: http://mirrors.iyunwei.com/tomcat/jdk-7u79-linux-x64.tar.gz
-    download_folder: /opt
+    download_folder: /usr/lib/jvm
     java_file: jdk-7u79-linux-x64.tar.gz
     java_name: java-7-oracle
 
@@ -10,19 +11,30 @@
   tasks:
     - name: Make jvm directory
       file:
-        path: /usr/lib/jvm
+        path: '{{download_folder}}'
         state: directory
         mode: '0755'
+      become: true
+      become_user: lobo
       
     - name: Download Oracle Jdk
       get_url: 
         url: '{{java_download}}'
         dest: '{{download_folder}}'
+      become: true
+      become_user: lobo
+      become_method: sudo
 
     - name: Java unarchive, extract file
       unarchive:
         src: '{{download_folder}}/{{java_file}}'
-        dest: /usr/lib/jvm/
+        dest: '{{download_folder}}'
+      become: true
+      become_user: lobo
+      become_method: sudo
 
     - name: Rename java directory
-      command: 'mv /usr/lib/jvm/jdk1.7.0_79 /usr/lib/jvm/{{java_name}}'
+      command: 'mv {{download_folder}}/jdk1.7.0_79 {{download_folder}}/{{java_name}}'
+      become: true
+      become_user: lobo
+      become_method: sudo
