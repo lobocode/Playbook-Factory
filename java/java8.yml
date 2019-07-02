@@ -1,6 +1,5 @@
 - name: Download java jdk 8 oracle
   hosts: servers
-  remote_user: lobo
   vars:
     java_download: https://direct.gdrive.vip/1C-oX7VDEC2AvOcuIsArn6atqHrHiK8ue
     download_folder: /usr/lib/jvm
@@ -15,7 +14,6 @@
         state: directory
         mode: '0755'
       become: true
-      become_user: root
       
     - name: Download Oracle Jdk
       get_url: 
@@ -29,11 +27,9 @@
         src: '{{download_folder}}/{{java_tar_file}}'
         dest: '{{download_folder}}'
       become: true
-      become_user: root
 
     - name: Rename java_tar_name in java_dir_name
       command: 'mv {{download_folder}}/{{java_tar_name}} {{download_folder}}/{{java_dir_name}}'
       become: true
-      become_user: root
 
 
