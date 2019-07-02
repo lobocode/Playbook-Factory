@@ -1,28 +1,39 @@
 - name: Download java jdk 8 oracle
   hosts: servers
+  remote_user: lobo
   vars:
-    java_download: https://github.com/frekele/oracle-java/releases/download/8u212-b10/jdk-8u212-linux-x64.tar.gz
-    download_folder: /opt
-    java_file: jdk-8u212-linux-x64.tar.gz
-    java_name: java-8-oracle
-
+    java_download: https://direct.gdrive.vip/1C-oX7VDEC2AvOcuIsArn6atqHrHiK8ue
+    download_folder: /usr/lib/jvm
+    java_tar_file: jdk-8u212-linux-x64.tar.gz
+    java_tar_name: jdk1.8.0_212
+    java_dir_name: java-8-oracle
 
   tasks:
     - name: Make jvm directory
       file:
-        path: /usr/lib/jvm
+        path: '{{download_folder}}'
         state: directory
         mode: '0755'
+      become: true
+      become_user: root
       
     - name: Download Oracle Jdk
       get_url: 
         url: '{{java_download}}'
-        dest: '{{download_folder}}'
+        dest: '{{download_folder}}/{{java_tar_file}}'
+      become: true
+      become_user: root
 
     - name: Java unarchive, extract file
       unarchive:
-        src: '{{download_folder}}/{{java_file}}'
-        dest: /usr/lib/jvm/
+        src: '{{download_folder}}/{{java_tar_file}}'
+        dest: '{{download_folder}}'
+      become: true
+      become_user: root
 
-    - name: Rename java directory
-      command: 'mv /usr/lib/jvm/jdk1.8.0_212 /usr/lib/jvm/{{java_name}}'
+    - name: Rename java_tar_name in java_dir_name
+      command: 'mv {{download_folder}}/{{java_tar_name}} {{download_folder}}/{{java_dir_name}}'
+      become: true
+      become_user: root
+
+
