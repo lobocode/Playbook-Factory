@@ -1,0 +1,2 @@
+[servers]
+177.105.35.101 ansible_connection=ssh ansible_user=ansible ansible_ssh_pass=ansible
