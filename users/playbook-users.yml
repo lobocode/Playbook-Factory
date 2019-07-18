@@ -1,0 +1,25 @@
+---
+- hosts: servers
+  gather_facts: no
+  connection: ssh
+  tasks:
+    - name: Add users in sudo groups
+      remote_user: ansible
+      become: yes
+      become_method: sudo
+      user:
+        name: "{{ new_user }}"
+        comment: "Admin user"
+        state: present
+        group: "{{ group }}"
+        # Make password with ansible all -i localhost, -m debug -a "msg={{ 'Mypassword' | password_hash('sha512', 'mysecretsalt') }}"
+        password: $6$myprecious$xFesuMpp5A/3.BAQCfRKEiph95BX.je7L/EepDXPlayTAKB9KyDKQbjSR/kjzchwVFIg1K.OLjDAI9u2DNlF6.
+        shell: /bin/bash
+        create_home: yes
+
+
+    - name: Force user to change password
+      remote_user: ansible
+      become: yes
+      become_method: sudo
+      shell: chage -d 0 "{{ new_user }}"

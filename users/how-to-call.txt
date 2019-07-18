@@ -1,0 +1,1 @@
+ansible-playbook playbook-users.yml -i hosts -vv --extra-vars "new_user=xablau group=wheel"
