@@ -1,0 +1,28 @@
+---
+- name: circusctl restart taiga 
+  become: true
+  become_user: root
+  command: circusctl restart taiga
+  when: taiga_service_manager == 'circus'
+
+- name: circusctl restart taiga-celery
+  become: true
+  become_user: root
+  command: circusctl restart taiga-celery
+  when: taiga_service_manager == 'circus'
+
+- name: systemctl restart taiga
+  become: true
+  become_user: root
+  service:
+    name: taiga
+    state: restarted
+  when: taiga_service_manager == 'systemd'
+
+- name: systemctl restart taiga-celery
+  become: true
+  become_user: root
+  service:
+    name: taiga-celery
+    state: restarted
+  when: taiga_service_manager == 'systemd'
