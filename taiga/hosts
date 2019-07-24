@@ -1,0 +1,8 @@
+[taiga-back]
+IP ansible_connection=ssh ansible_user=ansible ansible_ssh_pass=ansible
+
+[taiga-front:children]
+taiga-back
+
+[taiga-events:children]
+taiga-back
