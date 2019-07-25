@@ -1,0 +1,46 @@
+---
+- name: Download gitea binary
+  get_url:
+      url: "{{ gitea_url }}/v{{ gitea_version }}/gitea-{{ gitea_version }}-linux-{{ gitea_arch }}"
+      dest: /usr/local/bin/gitea
+      owner: root
+      group: root
+      mode: 0755
+      force: true
+  notify: "Restart gitea"
+  when: (not gitea_version_check | bool) or (gitea_active_version.stdout != gitea_version)
+
+- include: adduser.yml
+
+- name: "{{ item }}"
+  file:
+      path: "{{ item }}"
+      state: directory
+      owner: "{{ gitea_user }}"
+  with_items:
+      - "/etc/gitea"
+      - "{{ gitea_home }}"
+      - "{{ gitea_home}}/data"
+      - "{{ gitea_home }}/custom"
+      - "{{ gitea_home }}/custom/https"
+      - "{{ gitea_home }}/custom/mailer"
+
+- include: gitea_with_systemd.yml
+  when: ansible_service_mgr == "systemd"
+
+  template:
+      src: gitea.init.j2
+      dest: /etc/gitea/gitea.ini
+      owner: "{{ gitea_user }}"
+      mode: 0600
+  notify: "Restart gitea"
+
+  - name: Service gitea
+    service:
+        name: gitea
+        state: started
+        enabled: true
+    when: ansible_service_mgr == "systemd"
+
+
+
