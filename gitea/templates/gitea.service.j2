@@ -1,0 +1,12 @@
+[Unit]
+Description=Gitea server
+After=network.target
+
+[Service]
+User={{ gitea_user }}
+ExecStart=/usr/local/bin/gitea web -c /etc/gitea/gitea.ini
+Restart=on-failure
+WorkingDirectory={{ gitea_home }}
+
+[Install]
+WanteBy=multi-user.target
