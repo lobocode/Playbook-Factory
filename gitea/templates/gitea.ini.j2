@@ -1,0 +1,113 @@
+APP_NAME = {{ gitea_app_name }}
+RUN_USER = {{ gitea_user }}
+RUN_MODE = prod
+
+[repository]
+
+ROOT = {{ gitea_home}}
+FORCE_PRIVATE = {{ gitea_force_private }}
+MAX_CREATION_LIMIT = {{ gitea_user_repo_limit }}
+MIRROR_QUEUE_LENGHT = 1000
+DISABLE_HTTP_GIT = {{gitea_disable_http_git}}
+
+[ui]
+
+SHOW_USER_EMAIL = {{ gitea_show_user_email }}
+
+[server]
+
+PROTOCOL = {{ gitea_protocol }}
+DOMAIN = {{ gitea_http_domain }}
+ROOT_URL = {{ gitea_root_url }}
+HTTP_ADDR = {{ gitea_http_listen }}
+HTTP_PORT = {{ gitea_http_port }}
+DISABLE_SSH = false
+START_SSH_SERVER {{ gitea_start_ssh }}
+SSH_DOMAIN = {{ gitea_ssh_domain }}
+SSH_LISTEN_HOST = {{ gitea_ssh_listen }}
+SSH_PORT = {{ gitea_ssh_port }}
+SSH_LISTEN_PORT = %(SSH_PORT)
+OFFLINE_MODE = {{ gitea_offline_mode }}
+APP_DATA_PATH = {{ gitea_gome }}//data
+LFS_CONTENT_PATH = {{ gitea_lfs_content_path }}
+
+[database]
+
+DB_TYPE = {{ gitea_db_type }}
+HOST = {{ gitea_db_host }}
+NAME = {{ gitea_db_name }}
+USER = {{ gitea_db_user }}
+
+PASSWD = {{ gitea_db_passwd }}
+SSL_MODE = {{ gitea_db_ssl }}
+PATH = {{ gitea_db_path }}
+
+[indexer]
+
+ISSUE_INDEXER_PATH = {{ gitea_home }}
+ISSUE_INDEXER_QUEUE_TYPE = levelqueue
+ISSUE_INDEXER_QUEUE_DIR = {{ gitea_home }}
+
+REPO_INDEXER_ENABLED = false
+REPO_INDEXER_PATH = {{ gitea_home }}
+
+
+[security]
+
+INSTALL_LOCK = true
+SECRET_KEY = {{ gitea_secret_key }}
+INTERNAL_TOKEN = {{ gitea_internal_token }}
+LOGIN_REMEMBER_DAYS = 7
+
+[service]
+
+DISABLE_REGISTRATION = {{ gitea_disable_registration }}
+REQUIRE_SIGNIN_VIEW = {{ gitea_require_signin }}
+ENABLE_CAPTCHA = {{ gitea_enable_captcha }}
+CAPTCHA_TYPE = image
+RECAPTCHA_SECRET = 
+RECAPTCHA_SITEKEY =
+SHOW_REGISTRATION_BUTTON = {{ gitea_show_registration }}
+
+[mailer]
+
+ENABLED = {{ gitea_mailer_enabled }}
+HOST = {{ gitea_mailer_host }}
+DISABLE_HELO = 
+HELO_HOSTNAME = 
+SKIP_VERIFY = {{ gitea_mailer_skip_verify }}
+USE_CERTIFICATE = false
+CERT_FILE = {{ gitea_home }}/custom/mailer/cert.pem
+KEY_FILE = {{ gitea_home }}/custom/mailer/key.pem
+IS_TLS_ENABLED = {{ gitea_mailer_tls_enabled }}
+FROM = {{ gitea_mailer_from }}
+USER = {{ gitea_mailer_user }}
+PASSWD = {{ gitea_mailer_password }}
+SEND_AS_PLAIN_TEXT = false
+MAILER_TYPE = smtp
+SENDMAIL_PATH = sendmail
+SENDMAIL_ARGS =
+
+[session]
+
+PROVIDER = file
+PROVIDER_CONFIG = {{ gitea_home }}/data/sessions
+
+[picture]
+
+AVATAR_UPLOAD_PATH = {{ gitea_home }}/data/avatars
+DISABLE_GRAVATAR = {{ gitea_disable_gravatar }}
+
+[attachment]
+
+ENABLED = true
+PATH = {{ gitea_home }}/data/attachments
+
+
+[log]
+
+ROOT_PATH = {{ gitea_home }}/log
+MODE = file
+BUFFER_LEN = 10000
+LEVEL = info
+REDIRECT_MACARON_LOG = false
