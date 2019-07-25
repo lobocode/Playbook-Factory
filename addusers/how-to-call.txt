@@ -1,1 +1,1 @@
-ansible-playbook main.yml -i hosts -vvv
+ansible-playbook addusers.yml -i hosts -vvv -bK
